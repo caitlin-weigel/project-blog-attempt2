@@ -1,0 +1,56 @@
+---
+title: R Package
+author: Caitlin
+date: '2018-06-18'
+slug: r-package
+categories: []
+tags: []
+---
+
+
+
+<div id="r-package" class="section level1">
+<h1>R PACKAGE</h1>
+<div id="background" class="section level3">
+<h3>Background</h3>
+<p>In swimming, whoever touches the wall first wins. Electronic timing pad systems track the time of the race. Since most races are longer than 50 yards/meters, the pads also give splits and display on the board how fast a swimmer’s most recent 50 was. Because of this, most swimmers and coaches have ideal “race pace” times that they want to hit during their race in order to hit their goal time.</p>
+</div>
+<div id="purpose" class="section level3">
+<h3>Purpose</h3>
+<p>This package (developed with Ayush Nair) contains functions that allow a swimmer to calculate what time they should swim each 50 of their race in order to hit their ideal goal time (in seconds).</p>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<div id="yardmeter-race" class="section level3">
+<h3>100 Yard/Meter Race</h3>
+<p>Example</p>
+<pre class="r"><code>pace_100(70, &quot;breast&quot;)</code></pre>
+<pre><code>## [1] &quot;Your first 50 should be 33 seconds.&quot;
+## [1] &quot;Your second 50 should be 37 seconds.&quot;</code></pre>
+</div>
+<div id="yardmeter-race-1" class="section level3">
+<h3>200 Yard/Meter Race</h3>
+<pre class="r"><code>pace_200 &lt;- function(goal_time, stroke){
+  stroke &lt;- tolower(stroke)
+  if(stroke == &quot;free&quot; || stroke == &quot;freestyle&quot; || stroke == &quot;back&quot; || stroke == &quot;backstroke&quot;){
+    temp &lt;- goal_time/4
+    print(paste(&quot;Your first 50 should be&quot;, temp - 1.5, &quot;seconds.&quot;))
+    print(paste(&quot;Your second, third, and fourth 50 should each be around&quot;, temp + 0.5, &quot;seconds.&quot;))
+  }
+  else if(stroke == &quot;breast&quot; || stroke == &quot;breaststroke&quot; || stroke == &quot;fly&quot; || stroke == &quot;butterfly&quot;){
+    temp &lt;- goal_time / 4
+    first_50 &lt;- temp - 2.5
+    other_50s &lt;- (goal_time - first_50)/ 3
+    print(paste(&quot;Your first 50 should be&quot;, first_50, &quot;seconds.&quot;))
+    print(sprintf(&quot;Your second, third, and fourth 50 should each be around %.2f seconds.&quot;, other_50s))
+  }
+  else {stop(&quot;Invalid stroke style.&quot;, call. = FALSE)
+  }
+}</code></pre>
+<p>Example</p>
+<pre class="r"><code>pace_200(110, &quot;freestyle&quot;)</code></pre>
+<pre><code>## [1] &quot;Your first 50 should be 26 seconds.&quot;
+## [1] &quot;Your second, third, and fourth 50 should each be around 28 seconds.&quot;</code></pre>
+</div>
+</div>
+</div>

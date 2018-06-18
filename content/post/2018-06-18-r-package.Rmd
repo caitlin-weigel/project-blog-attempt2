@@ -1,0 +1,71 @@
+---
+title: R Package
+author: Caitlin
+date: '2018-06-18'
+slug: r-package
+categories: []
+tags: []
+---
+# R PACKAGE
+
+### Background
+
+In swimming, whoever touches the wall first wins. Electronic timing pad systems track the time of the race. Since most races are longer than 50 yards/meters, the pads also give splits and display on the board how fast a swimmer's most recent 50 was. Because of this, most swimmers and coaches have ideal "race pace" times that they want to hit during their race in order to hit their goal time.
+
+### Purpose
+
+This package (developed with Ayush Nair) contains functions that allow a swimmer to calculate what time they should swim each 50 of their race in order to hit their ideal goal time (in seconds).
+
+## Functions
+### 100 Yard/Meter Race
+```{r include=FALSE}
+pace_100 <- function(goal_time, stroke){
+  stroke <- tolower(stroke)
+  if(stroke == "free" || stroke == "freestyle" || stroke == "back" || stroke == "backstroke"){
+    temp <- goal_time/2
+    print(paste("Your first 50 should be", temp - 1, "seconds."))
+    print(paste("Your second 50 should be", temp + 1, "seconds."))
+  }
+  else if(stroke == "breast" || stroke == "breaststroke" || stroke == "fly" || stroke == "butterfly"){
+    temp <- goal_time / 2
+    print(paste("Your first 50 should be", temp - 2, "seconds."))
+    print(paste("Your second 50 should be", temp + 2, "seconds."))
+  }
+  else {stop("Invalid stroke style.", call. = FALSE)
+  }
+}
+```
+
+Example
+```{r}
+pace_100(70, "breast")
+```
+
+### 200 Yard/Meter Race
+```{r}
+pace_200 <- function(goal_time, stroke){
+  stroke <- tolower(stroke)
+  if(stroke == "free" || stroke == "freestyle" || stroke == "back" || stroke == "backstroke"){
+    temp <- goal_time/4
+    print(paste("Your first 50 should be", temp - 1.5, "seconds."))
+    print(paste("Your second, third, and fourth 50 should each be around", temp + 0.5, "seconds."))
+  }
+  else if(stroke == "breast" || stroke == "breaststroke" || stroke == "fly" || stroke == "butterfly"){
+    temp <- goal_time / 4
+    first_50 <- temp - 2.5
+    other_50s <- (goal_time - first_50)/ 3
+    print(paste("Your first 50 should be", first_50, "seconds."))
+    print(sprintf("Your second, third, and fourth 50 should each be around %.2f seconds.", other_50s))
+  }
+  else {stop("Invalid stroke style.", call. = FALSE)
+  }
+}
+```
+
+Example
+```{r}
+pace_200(110, "freestyle")
+```
+
+This package is available at: install_github(‘goaltimepace’,'caitlin-weigel’)
+

@@ -1,0 +1,56 @@
+---
+title: Kaggle Submission
+author: Caitlin
+date: '2018-06-18'
+slug: kaggle-submission
+categories: []
+tags: []
+---
+
+# KAGGLE
+
+Kaggle is currently hosting a competition about Home Credit Default Risk in which one tries to build a model to predict whether a person will default on their credit loan. This project is a great opportunity to utilize my new R skills.
+
+My second submission was my best submission. In it, I converted NAs to the be the mean of the column. 
+
+```{r include=FALSE}
+# FUNCTIONS
+load_application <- function(filename){
+  read.csv(filename) %>% 
+    setNames(names(.) %>% tolower())
+}
+
+# Loading data
+data_train <- load_application("application_train.csv")
+data_test <- load_application("application_test.csv")
+
+set.seed(1432)
+
+# Splitting train data into train and test data.
+train.index = sample(c("train", "test"), nrow(data_train), replace = TRUE, c(0.8, 0.2))
+
+data_train = split(data_train, train.index)
+
+# Replace NA values with mean of the column
+ok <- sapply(data_train$train, is.numeric)
+data_train$train[ok] <- lapply(data_train$train[ok], na.aggregate)
+
+okkur <- sapply(data_train$test, is.numeric)
+data_train$test[okkur] <- lapply(data_train$test[okkur], na.aggregate)
+
+okkur2 <- sapply(data_test, is.numeric)
+data_test[okkur2] <- lapply(data_test[okkur2], na.aggregate)
+
+okay <- sapply(data_test, is.numeric)
+data_test <- lapply(data_test[okay], na.aggregate)
+```
+
+Using intuition and statistical significance, I created a logistic regression model for the home credit default data.
+
+```{r include = FLASE}
+fit2 <- glm(target ~ amt_credit + amt_annuity + amt_goods_price + name_education_type + name_family_status + days_birth + days_employed + days_registration + days_id_publish + own_car_age + flag_work_phone + flag_phone + flag_email + occupation_type + region_rating_client_w_city + reg_city_not_live_city + ext_source_1 + ext_source_2 + ext_source_3 + nonlivingarea_avg, data_train$train, family = binomial)
+```
+
+When submitted to Kaggle, I got an accuracy of .72727.
+
+
